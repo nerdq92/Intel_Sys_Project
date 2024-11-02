@@ -1,8 +1,6 @@
 import streamlit as st
 import pandas as pd
 import pickle
-from transformers import pipeline
-import tts
 
 # Initialize session state variables
 if "product_pred" not in st.session_state:
