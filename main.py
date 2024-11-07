@@ -121,16 +121,18 @@ def fetch_open_graph_data(url):
         data_dynamic_image = json.loads(tag['data-a-dynamic-image'])
         title = tag['alt']
         image_url = list(data_dynamic_image.keys())[0]
-    return title, image_url
-    # return soup
+    # return title, image_url
+    return soup
 
 if st.session_state["genre_input"] is not None:
     matching_books = book_df[(book_df['Main Genre'] == st.session_state["genre_input"])]
     if not matching_books.empty:
         first_book_url = matching_books.sample(n=1).iloc[0]['URLs']
-        title, image_url = fetch_open_graph_data(first_book_url)
-        # tag = fetch_open_graph_data(first_book_url)
-        # st.write(tag)
+        # title, image_url = fetch_open_graph_data(first_book_url)
+        title = 'abc'
+        image_url = 'https://i.pinimg.com/736x/72/7b/8f/727b8f02c863018e59fc5aa8e2920b86.jpg'
+        tag = fetch_open_graph_data(first_book_url)
+        st.write(tag)
         st.write("### Recommended Book:")
         st.write(f"##### <span style='color:red;'>{title}", unsafe_allow_html=True)
         st.image(image_url, width=300)
