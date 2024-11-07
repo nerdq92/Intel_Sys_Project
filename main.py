@@ -121,13 +121,14 @@ def fetch_open_graph_data(url):
         data_dynamic_image = json.loads(tag['data-a-dynamic-image'])
         title = tag['alt']
         image_url = list(data_dynamic_image.keys())[0]
-    return title, image_url, soup
-
+    # return title, image_url, soup
+    return soup
 if st.session_state["genre_input"] is not None:
     matching_books = book_df[(book_df['Main Genre'] == st.session_state["genre_input"])]
     if not matching_books.empty:
         first_book_url = matching_books.sample(n=1).iloc[0]['URLs']
-        title, image_url, soup = fetch_open_graph_data(first_book_url)
+        # title, image_url, soup = fetch_open_graph_data(first_book_url)
+        soup = fetch_open_graph_data(first_book_url)
         if title is None:
             title = 'abc'
         if image_url is None:
