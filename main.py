@@ -103,16 +103,16 @@ if  st.session_state["personality_pred"] is not None and st.session_state["genre
 book_df = pd.read_csv('Books_df.csv')
 
 def fetch_open_graph_data(url):
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"
-    }
     # headers = {
-    #     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36",
-    #     "Accept-Language": "en-US,en;q=0.9",
-    #     "Accept-Encoding": "gzip, deflate, br",
-    #     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-    #     "Connection": "keep-alive",
+    #     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"
     # }
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+        "Connection": "keep-alive",
+    }
     response = requests.get(url, headers=headers)
     soup = BeautifulSoup(response.content, 'html.parser')
     # Extract Open Graph properties
@@ -121,18 +121,16 @@ def fetch_open_graph_data(url):
         data_dynamic_image = json.loads(tag['data-a-dynamic-image'])
         title = tag['alt']
         image_url = list(data_dynamic_image.keys())[0]
-    # return title, image_url
-    return soup
+    return title, image_url, soup
 
 if st.session_state["genre_input"] is not None:
     matching_books = book_df[(book_df['Main Genre'] == st.session_state["genre_input"])]
     if not matching_books.empty:
         first_book_url = matching_books.sample(n=1).iloc[0]['URLs']
-        # title, image_url = fetch_open_graph_data(first_book_url)
-        title = 'abc'
-        image_url = 'https://i.pinimg.com/736x/72/7b/8f/727b8f02c863018e59fc5aa8e2920b86.jpg'
-        tag = fetch_open_graph_data(first_book_url)
-        st.write(tag)
+        title, image_url, soup = fetch_open_graph_data(first_book_url)
+        # title = 'abc'
+        # image_url = 'https://i.pinimg.com/736x/72/7b/8f/727b8f02c863018e59fc5aa8e2920b86.jpg'
+        # st.write(soup)
         st.write("### Recommended Book:")
         st.write(f"##### <span style='color:red;'>{title}", unsafe_allow_html=True)
         st.image(image_url, width=300)
