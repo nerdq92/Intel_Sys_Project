@@ -129,36 +129,36 @@ if st.session_state["genre_input"] is not None:
         first_book_url = matching_books.sample(n=1).iloc[0]['URLs']     
         st.write(first_book_url)
         # first_book_url = 'https://www.amazon.in/Complete-Novels-Sherlock-Holmes/dp/8175994312/ref=zg_bs_g_1318054031_d_sccl_1/000-0000000-0000000?psc=1'
-        # try:
-        #     title, image_url, soup = fetch_open_graph_data(first_book_url)
-        #     st.write("### Recommended Book:")
-        #     st.write(f"##### <span style='color:red;'>{title}", unsafe_allow_html=True)
-        #     st.write(image_url)
-        #     # st.image(image_url, width=300)
-        #     # st.link_button("Buy the Book", first_book_url)
-        #     if st.button('Find another Book'):
-        #         st.rerun()
-        #     # st.write("##### Do you like our recommendation?")      
-        #     # st.session_state["title"].append(title)
-        #     # sentiment_mapping = ["one", "two", "three", "four", "five"]
-        #     # selected = st.feedback("stars")        
-        #     # if selected is not None:
-        #     #     st.session_state["feedback"][st.session_state["title"][-2]] = sentiment_mapping[selected]
-        #     # st.write("##### Feedback History")      
-        #     # # st.write(st.session_state["feedback"])
-        #     # # st.write(st.session_state["title"])
-        #     # for title,feedback in st.session_state["feedback"].items():
-        #     #     if feedback:
-        #     #         st.write(f"You gave the book :rainbow[{title}] {feedback} stars.") 
-        #     #     else:
-        #     #         st.write(f"You haven't given feedback to the book :rainbow[{title}].")    
-        #     st.write(soup)                
-        # except:
-        #     st.write('Please visit the site directly.')
-        #     st.write(first_book_url)    
-        #     title = 'not available'        
-        #     image_url = 'https://i.pinimg.com/736x/72/7b/8f/727b8f02c863018e59fc5aa8e2920b86.jpg'        
-        #     if st.button('Refresh'):
-        #         st.rerun()
+        try:
+            title, image_url, soup = fetch_open_graph_data(first_book_url)
+            st.write("### Recommended Book:")
+            st.write(f"##### <span style='color:red;'>{title}", unsafe_allow_html=True)
+            st.write(image_url)
+            # st.image(image_url, width=300)
+            # st.link_button("Buy the Book", first_book_url)
+            if st.button('Find another Book'):
+                st.rerun()
+            # st.write("##### Do you like our recommendation?")      
+            # st.session_state["title"].append(title)
+            # sentiment_mapping = ["one", "two", "three", "four", "five"]
+            # selected = st.feedback("stars")        
+            # if selected is not None:
+            #     st.session_state["feedback"][st.session_state["title"][-2]] = sentiment_mapping[selected]
+            # st.write("##### Feedback History")      
+            # # st.write(st.session_state["feedback"])
+            # # st.write(st.session_state["title"])
+            # for title,feedback in st.session_state["feedback"].items():
+            #     if feedback:
+            #         st.write(f"You gave the book :rainbow[{title}] {feedback} stars.") 
+            #     else:
+            #         st.write(f"You haven't given feedback to the book :rainbow[{title}].")    
+            st.write(soup)                
+        except:
+            st.write('Please visit the site directly.')
+            st.write(first_book_url)    
+            title = 'not available'        
+            image_url = 'https://i.pinimg.com/736x/72/7b/8f/727b8f02c863018e59fc5aa8e2920b86.jpg'        
+            if st.button('Refresh'):
+                st.rerun()
         
     
