@@ -153,5 +153,7 @@ if st.session_state["genre_input"] is not None:
             st.write(first_book_url)    
             title = 'not available'        
             image_url = 'https://i.pinimg.com/736x/72/7b/8f/727b8f02c863018e59fc5aa8e2920b86.jpg'
+            if st.button('Refresh):
+                st.rerun()
         
     
