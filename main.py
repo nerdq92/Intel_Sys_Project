@@ -134,3 +134,5 @@ if st.session_state["genre_input"] is not None:
     if st.button("Find another book"):
         st.session_state["genre_input"] = None
         st.rerun()
+    if st.feedback("stars"):
+        st.write("Thank you for your feedback!")
