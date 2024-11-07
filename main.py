@@ -105,13 +105,14 @@ book_df = pd.read_csv('Books_df.csv')
 def fetch_google_books_data(url):
     response = requests.get(url)
     data = response.json()
+    soup = BeautifulSoup(data.content, 'html.parser')
     # if data["items"]:
     #     book_info = data["items"][0]["volumeInfo"]
     #     book_title = book_info.get("title", "No title available")
     #     image_url = book_info["imageLinks"]["thumbnail"] if "imageLinks" in book_info else "No image available"
     #     return book_title, image_url
     # return None, None
-    return data
+    return soup
 
 st.title("Book Search")
 url = st.text_input("Enter a site url")
