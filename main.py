@@ -135,7 +135,9 @@ if st.session_state["genre_input"] is not None:
         for title,feedback in st.session_state["feedback"].items():
             if feedback:
                 st.write(f"You gave the book :rainbow[{title}] {feedback} stars.") 
-
+    if st.button('Change Genre'):
+        st.session_state["genre_input"] = None
+        st.rerun()
 # if st.session_state["genre_input"] is not None:
 #     matching_books = book_df[(book_df['Main Genre'] == st.session_state["genre_input"])]
 #     if not matching_books.empty:
