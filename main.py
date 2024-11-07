@@ -102,8 +102,8 @@ if  st.session_state["personality_pred"] is not None and st.session_state["genre
 
 book_df = pd.read_csv('Books_df.csv')
 
-def fetch_google_books_data(title):
-    response = requests.get(f"https://www.googleapis.com/books/v1/volumes?q={title}")
+def fetch_google_books_data(url):
+    response = requests.get(url)
     data = response.json()
     # if data["items"]:
     #     book_info = data["items"][0]["volumeInfo"]
@@ -114,11 +114,11 @@ def fetch_google_books_data(title):
     return data
 
 st.title("Book Search")
-title = st.text_input("Enter a book title")
+url = st.text_input("Enter a site url")
 
 if st.button("Search"):
     # book_title, image_url = fetch_google_books_data(title)
-    data = fetch_google_books_data(title)
+    data = fetch_google_books_data(url)
     st.write(data)
     # if book_title:
     #     st.write(f"**Title:** {book_title}")
