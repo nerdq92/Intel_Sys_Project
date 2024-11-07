@@ -137,9 +137,10 @@ if st.session_state["genre_input"] is not None:
         st.link_button("Buy the Book", first_book_url)
         st.write("##### Do you like our recommendation?")      
         st.session_state["title"].append(title)
+        sentiment_mapping = ["one", "two", "three", "four", "five"]
         selected = st.feedback("stars")        
         if selected is not None:
-            st.session_state["feedback"][st.session_state["title"][-2]] = selected+1
+            st.session_state["feedback"][st.session_state["title"][-2]] = sentiment_mapping[selected]
         st.write("##### Feedback History")      
         # st.write(st.session_state["feedback"])
         # st.write(st.session_state["title"])
