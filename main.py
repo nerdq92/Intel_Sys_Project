@@ -124,8 +124,8 @@ if st.session_state["genre_input"] is not None:
     if st.button("Search"):
         img_tags = fetch_books_data(url)    
         random_element = random.choice(img_tags)
-        st.write(random_element.get("alt"))
-        st.image(random_element.get("data-src"))
+        st.write(f"##### <span style='color:red;'>{random_element.get("alt")}", unsafe_allow_html=True)
+        st.image(random_element.get("data-src"),width=250)
 
 # if st.session_state["genre_input"] is not None:
 #     matching_books = book_df[(book_df['Main Genre'] == st.session_state["genre_input"])]
