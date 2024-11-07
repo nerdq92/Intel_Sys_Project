@@ -126,12 +126,13 @@ def fetch_open_graph_data(url):
 if st.session_state["genre_input"] is not None:
     matching_books = book_df[(book_df['Main Genre'] == st.session_state["genre_input"])]
     if not matching_books.empty:
-        first_book_url = matching_books.sample(n=1).iloc[0]['URLs']
-        # title, image_url, soup = fetch_open_graph_data(first_book_url)
-        soup = fetch_open_graph_data(first_book_url)
-        if True:
-            title = 'abc'
-        if True:
+        first_book_url = matching_books.sample(n=1).iloc[0]['URLs']        
+        try:
+            title, image_url, soup = fetch_open_graph_data(first_book_url)
+        except:
+            st.write('Please visit the site directly.')
+            st.write(first_book_url)    
+            title = 'not available'        
             image_url = 'https://i.pinimg.com/736x/72/7b/8f/727b8f02c863018e59fc5aa8e2920b86.jpg'
         
         st.write("### Recommended Book:")
