@@ -24,6 +24,8 @@ if "agreeableness" not in st.session_state:
     st.session_state["agreeableness"] = None
 if "extraversion" not in st.session_state:
     st.session_state["extraversion"] = None
+if "feedback" not in st.session_state:
+    st.session_state["feedback"] = None
 
 if st.session_state["personality_pred"] is None:
     st.title("Personality Classification")
