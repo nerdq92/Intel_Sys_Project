@@ -119,12 +119,12 @@ def fetch_books_data(url):
     
 if st.session_state["genre_input"] is not None:
     st.title("Book Recommendation")
-    url = book_df[book_df['Genre']==st.session_state["genre_input"]]['URL']    
+    url = book_df[book_df['Genre']==st.session_state["genre_input"]]['URL'].values    
     st.write(url)
-    # img_tags = fetch_books_data(url)    
-    # random_element = random.choice(img_tags)
-    # st.write(f"##### <span style='color:red;'>{random_element.get("alt")}", unsafe_allow_html=True)
-    # st.image(random_element.get("data-src"),width=250)
+    img_tags = fetch_books_data(url)    
+    random_element = random.choice(img_tags)
+    st.write(f"##### <span style='color:red;'>{random_element.get("alt")}", unsafe_allow_html=True)
+    st.image(random_element.get("data-src"),width=250)
 
 # if st.session_state["genre_input"] is not None:
 #     matching_books = book_df[(book_df['Main Genre'] == st.session_state["genre_input"])]
