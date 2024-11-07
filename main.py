@@ -121,14 +121,14 @@ def fetch_open_graph_data(url):
         data_dynamic_image = json.loads(tag['data-a-dynamic-image'])
         title = tag['alt']
         image_url = list(data_dynamic_image.keys())[0]
-    # return title, image_url, soup
-    return soup
+    return title, image_url
+    # return soup
 if st.session_state["genre_input"] is not None:
     matching_books = book_df[(book_df['Main Genre'] == st.session_state["genre_input"])]
     if not matching_books.empty:
         first_book_url = matching_books.sample(n=1).iloc[0]['URLs']        
         try:
-            title, image_url, soup = fetch_open_graph_data(first_book_url)
+            title, image_url = fetch_open_graph_data(first_book_url)
         except:
             st.write('Please visit the site directly.')
             st.write(first_book_url)    
@@ -152,5 +152,4 @@ if st.session_state["genre_input"] is not None:
             if feedback:
                 st.write(f"You gave the book :rainbow[{title}] {feedback} stars.") 
             else:
-                st.write(f"You haven't given feedback to the book :rainbow[{title}].") 
-        st.write(soup)
+                st.write(f"You haven't given feedback to the book :rainbow[{title}].")         
