@@ -135,7 +135,9 @@ if st.session_state["genre_input"] is not None:
         st.link_button("Buy the Book", first_book_url)
         st.write("##### Do you like our recommendation?")        
         st.session_state["feedback"][f"{title}"] = st.feedback("stars")
-        st.write(st.session_state["feedback"])
+        for title,feedback in st.session_state["feedback"].items():
+            if feedback:
+                st.write(f"You gave the book {title} {feedback} stars.")        
     # if st.button("Find another book"):
     #     st.session_state["genre_input"] = None
     #     st.rerun()
