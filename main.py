@@ -103,7 +103,14 @@ if  st.session_state["personality_pred"] is not None and st.session_state["genre
 book_df = pd.read_csv('Books_df.csv')
 
 def fetch_google_books_data(url):
-    response = requests.get(url)
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+        "Connection": "keep-alive",
+    }
+    response = requests.get(url,headers=headers)
     data = response.json()
     soup = BeautifulSoup(data.content, 'html.parser')
     # if data["items"]:
