@@ -120,11 +120,21 @@ def fetch_books_data(url):
 if st.session_state["genre_input"] is not None:
     st.title("Book Recommendation")
     url = book_df[book_df['Genre']==st.session_state["genre_input"]].iloc[0]['URL']        
-    st.write(url)
     img_tags = fetch_books_data(url)    
     random_element = random.choice(img_tags)
-    st.write(f"##### <span style='color:red;'>{random_element.get("alt")}", unsafe_allow_html=True)
+    title = random_element.get("alt")
+    st.write(f"##### <span style='color:red;'>{title}", unsafe_allow_html=True)
     st.image(random_element.get("data-src"),width=250)
+    st.write("##### Do you like our recommendation?") 
+    st.session_state["title"].append(title)
+    sentiment_mapping = ["one", "two", "three", "four", "five"]
+    selected = st.feedback("stars") 
+    if selected is not None:
+        st.session_state["feedback"][st.session_state["title"][-2]] = sentiment_mapping[selected]
+        st.write("##### Feedback History")
+        for title,feedback in st.session_state["feedback"].items():
+            if feedback:
+                st.write(f"You gave the book :rainbow[{title}] {feedback} stars.") 
 
 # if st.session_state["genre_input"] is not None:
 #     matching_books = book_df[(book_df['Main Genre'] == st.session_state["genre_input"])]
