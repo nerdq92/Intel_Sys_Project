@@ -139,9 +139,10 @@ if st.session_state["genre_input"] is not None:
         st.session_state["title"].append(title)
         selected = st.feedback("stars")        
         if selected is not None:
-            st.session_state["feedback"][st.session_state["title"][-1]] = selected
+            st.session_state["feedback"][st.session_state["title"][-2]] = selected
         st.write("##### Feedback History")      
         st.write(st.session_state["feedback"])
+        st.write(st.session_state["title"])
         for title,feedback in st.session_state["feedback"].items():
             if feedback:
                 st.write(f"You gave the book :rainbow[{title}] {feedback} stars.") 
