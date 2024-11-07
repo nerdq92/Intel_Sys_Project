@@ -115,18 +115,19 @@ def fetch_google_books_data(url):
     img_tag = data.find("img", class_="img-responsive mx-auto d-block swiper-lazy")
     data_image = img_tag.get("data-image")
     alt_text = img_tag.get("alt")
-    return data_image,alt_text
+    return data_image,alt_text,img_tag
 
 st.title("Book Search")
 url = st.text_input("Enter a site url")
 
 if st.button("Search"):
     # book_title, image_url = fetch_google_books_data(title)
-    data_image,alt_text = fetch_google_books_data(url)
+    data_image,alt_text,img_tag = fetch_google_books_data(url)
     st.write(alt_text)
     st.image('https://cdn0.fahasa.com/media/catalog/product/8/9/8935235238978.jpg')
     st.image('https://bizweb.dktcdn.net/thumb/medium/100/363/455/products/kafkabenbobien001-6108c87f-c331-4b10-af5b-81e54f4b1bde.jpg?v=1727681752660')
     st.write(data_image)    
+    st.write(img_tag)
     # if book_title:
     #     st.write(f"**Title:** {book_title}")
     #     if image_url != "No image available":
