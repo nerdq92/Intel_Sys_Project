@@ -93,14 +93,15 @@ if  st.session_state["personality_pred"] is not None and st.session_state["genre
         personality_image = 'https://i.pinimg.com/564x/ad/fb/01/adfb011065094db385d615cb3b7d4afe.jpg'
     st.image(personality_image, width=300)
     if st.session_state["gender"] == 'Male':
-        genre_choices = ('Sports','Computing, Internet & Digital Media','Sciences, Technology & Medicine','Science & Mathematics','Engineering','Travel')
+        genre_choices = ('Khoa học viễn tưởng','Trinh thám - Kinh dị','Khoa học','Kinh doanh','Phiêu lưu ly kỳ','Kinh tế - Chính trị')
     else:
-        genre_choices = ('Literature & Fiction','Crafts, Home & Lifestyle','Arts, Film & Photography','Society & Social Sciences','Health, Family & Personal Development','Travel')
+        genre_choices = ('Lãng mạn','Nghệ thuật','Tâm linh - Tôn giáo','Thơ - Kịch','Văn học hiện đại','Tâm lý học')
     genre_input = st.selectbox("You may be interested in one of these genres. Pick one:", genre_choices)
     if st.button('Submit'):
         st.session_state["genre_input"] = genre_input
         st.rerun()
 
+book_df = pd.read_csv('book_genre.csv')
 def fetch_books_data(url):
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36",
@@ -118,7 +119,7 @@ def fetch_books_data(url):
     
 if st.session_state["genre_input"] is not None:
     st.title("Book Recommendation")
-    url = 'https://nhanam.vn/lang-man'        
+    url = df[df['Genre']==st.session_state["genre_input"]]['URL']    
     img_tags = fetch_books_data(url)    
     random_element = random.choice(img_tags)
     st.write(f"##### <span style='color:red;'>{random_element.get("alt")}", unsafe_allow_html=True)
