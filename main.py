@@ -105,26 +105,29 @@ book_df = pd.read_csv('Books_df.csv')
 def fetch_google_books_data(title):
     response = requests.get(f"https://www.googleapis.com/books/v1/volumes?q={title}")
     data = response.json()
-    if data["items"]:
-        book_info = data["items"][0]["volumeInfo"]
-        book_title = book_info.get("title", "No title available")
-        image_url = book_info["imageLinks"]["thumbnail"] if "imageLinks" in book_info else "No image available"
-        return book_title, image_url
-    return None, None
+    # if data["items"]:
+    #     book_info = data["items"][0]["volumeInfo"]
+    #     book_title = book_info.get("title", "No title available")
+    #     image_url = book_info["imageLinks"]["thumbnail"] if "imageLinks" in book_info else "No image available"
+    #     return book_title, image_url
+    # return None, None
+    return data
 
 st.title("Book Search")
 title = st.text_input("Enter a book title")
 
 if st.button("Search"):
-    book_title, image_url = fetch_google_books_data(title)
-    if book_title:
-        st.write(f"**Title:** {book_title}")
-        if image_url != "No image available":
-            st.image(image_url)
-        else:
-            st.write("No cover image available.")
-    else:
-        st.write("Book not found.")
+    # book_title, image_url = fetch_google_books_data(title)
+    data = fetch_google_books_data(title)
+    st.write(data)
+    # if book_title:
+    #     st.write(f"**Title:** {book_title}")
+    #     if image_url != "No image available":
+    #         st.image(image_url)
+    #     else:
+    #         st.write("No cover image available.")
+    # else:
+    #     st.write("Book not found.")
 
 # if st.session_state["genre_input"] is not None:
 #     matching_books = book_df[(book_df['Main Genre'] == st.session_state["genre_input"])]
