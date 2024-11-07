@@ -111,7 +111,7 @@ def fetch_google_books_data(url):
         "Connection": "keep-alive",
     }
     response = requests.get(url,headers=headers)
-    data = response.headers
+    data = BeautifulSoup(response.content, 'html.parser')
     # data = response.json()
     # soup = BeautifulSoup(data.content, 'html.parser')
     # if data["items"]:
