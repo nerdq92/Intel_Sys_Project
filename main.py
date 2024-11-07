@@ -101,8 +101,6 @@ if  st.session_state["personality_pred"] is not None and st.session_state["genre
         st.session_state["genre_input"] = genre_input
         st.rerun()
 
-
-
 def fetch_books_data(url):
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36",
@@ -120,12 +118,11 @@ def fetch_books_data(url):
     
 if st.session_state["genre_input"] is not None:
     st.title("Book Recommendation")
-    url = 'https://nhanam.vn/lang-man'    
-    if st.button("Search"):
-        img_tags = fetch_books_data(url)    
-        random_element = random.choice(img_tags)
-        st.write(f"##### <span style='color:red;'>{random_element.get("alt")}", unsafe_allow_html=True)
-        st.image(random_element.get("data-src"),width=250)
+    url = 'https://nhanam.vn/lang-man'        
+    img_tags = fetch_books_data(url)    
+    random_element = random.choice(img_tags)
+    st.write(f"##### <span style='color:red;'>{random_element.get("alt")}", unsafe_allow_html=True)
+    st.image(random_element.get("data-src"),width=250)
 
 # if st.session_state["genre_input"] is not None:
 #     matching_books = book_df[(book_df['Main Genre'] == st.session_state["genre_input"])]
