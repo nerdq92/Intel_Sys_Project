@@ -26,6 +26,8 @@ if "extraversion" not in st.session_state:
     st.session_state["extraversion"] = None
 if "feedback" not in st.session_state:
     st.session_state["feedback"] = {}
+if "title" not in st.session_state:
+    st.session_state["title"] = []
 
 if st.session_state["personality_pred"] is None:
     st.title("Personality Classification")
@@ -133,10 +135,11 @@ if st.session_state["genre_input"] is not None:
         st.write(f"##### <span style='color:red;'>{title}", unsafe_allow_html=True)
         st.image(image_url, width=300)
         st.link_button("Buy the Book", first_book_url)
-        st.write("##### Do you like our recommendation?")        
+        st.write("##### Do you like our recommendation?")      
+        st.session_state["title"].append(title)
         selected = st.feedback("stars")        
         if selected is not None:
-            st.session_state["feedback"][f"{title}"] = selected
+            st.session_state["feedback"][st.session_state["title"][-1]] = selected
         st.write("##### Feedback History")      
         st.write(st.session_state["feedback"])
         for title,feedback in st.session_state["feedback"].items():
