@@ -4,6 +4,7 @@ import pickle
 from bs4 import BeautifulSoup
 import requests
 import json
+import random
 
 # Initialize session state variables
 if "personality_pred" not in st.session_state:
@@ -119,8 +120,7 @@ def fetch_books_data(url):
     
 if st.session_state["genre_input"] is not None:
     st.title("Book Recommendation")
-    url = 'https://nhanam.vn/lang-man'
-    
+    url = 'https://nhanam.vn/lang-man'    
     if st.button("Search"):
         img_tags = fetch_books_data(url)    
         random_element = random.choice(img_tags)
