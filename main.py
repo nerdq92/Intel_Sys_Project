@@ -111,7 +111,7 @@ def fetch_open_graph_data(url):
         title = tag['alt']
         image_url = list(data_dynamic_image.keys())[0]
     # return title, image_url
-    return response
+    return soup
 
 if st.session_state["genre_input"] is not None:
     matching_books = book_df[(book_df['Main Genre'] == st.session_state["genre_input"])]
