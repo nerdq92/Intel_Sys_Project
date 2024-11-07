@@ -131,8 +131,9 @@ if st.session_state["genre_input"] is not None:
             title, image_url, soup = fetch_open_graph_data(first_book_url)
             st.write("### Recommended Book:")
             st.write(f"##### <span style='color:red;'>{title}", unsafe_allow_html=True)
-            st.image(image_url, width=300)
-            st.link_button("Buy the Book", first_book_url)
+            st.write(image_url)
+            # st.image(image_url, width=300)
+            # st.link_button("Buy the Book", first_book_url)
             if st.button('Find another Book'):
                 st.rerun()
             # st.write("##### Do you like our recommendation?")      
