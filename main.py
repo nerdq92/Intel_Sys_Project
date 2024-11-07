@@ -102,63 +102,66 @@ if  st.session_state["personality_pred"] is not None and st.session_state["genre
 
 book_df = pd.read_csv('Books_df.csv')
 
-def fetch_open_graph_data(url):
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"
-    }
-    # headers = {
-    #     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36",
-    #     "Accept-Language": "en-US,en;q=0.9",
-    #     "Accept-Encoding": "gzip, deflate, br",
-    #     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-    #     "Connection": "keep-alive",
-    # }
-    response = requests.get(url, headers=headers)
-    soup = BeautifulSoup(response.content, 'html.parser')
-    # Extract Open Graph properties
-    tag = soup.find('img', {'id': 'landingImage'})
-    if tag and tag.has_attr('data-a-dynamic-image'):
-        data_dynamic_image = json.loads(tag['data-a-dynamic-image'])
-        title = tag['alt']
-        image_url = list(data_dynamic_image.keys())[0]
-    return title, image_url, soup
-    # return soup
-if st.session_state["genre_input"] is not None:
-    matching_books = book_df[(book_df['Main Genre'] == st.session_state["genre_input"])]
-    if not matching_books.empty:
-        first_book_url = matching_books.sample(n=1).iloc[0]['URLs']     
-        st.write(first_book_url)
-        # first_book_url = 'https://www.amazon.in/Complete-Novels-Sherlock-Holmes/dp/8175994312/ref=zg_bs_g_1318054031_d_sccl_1/000-0000000-0000000?psc=1'
-        try:
-            title, image_url, soup = fetch_open_graph_data(first_book_url)
-            st.write("### Recommended Book:")
-            st.write(f"##### <span style='color:red;'>{title}", unsafe_allow_html=True)
-            st.write(image_url)
-            # st.image(image_url, width=300)
-            # st.link_button("Buy the Book", first_book_url)
-            if st.button('Find another Book'):
-                st.rerun()
-            # st.write("##### Do you like our recommendation?")      
-            # st.session_state["title"].append(title)
-            # sentiment_mapping = ["one", "two", "three", "four", "five"]
-            # selected = st.feedback("stars")        
-            # if selected is not None:
-            #     st.session_state["feedback"][st.session_state["title"][-2]] = sentiment_mapping[selected]
-            # st.write("##### Feedback History")      
-            # # st.write(st.session_state["feedback"])
-            # # st.write(st.session_state["title"])
-            # for title,feedback in st.session_state["feedback"].items():
-            #     if feedback:
-            #         st.write(f"You gave the book :rainbow[{title}] {feedback} stars.") 
-            #     else:
-            #         st.write(f"You haven't given feedback to the book :rainbow[{title}].")    
-            st.write(soup)                
-        except:
-            st.write('Please visit the site directly.')
-            st.write(first_book_url)    
-            title = 'not available'        
-            image_url = 'https://i.pinimg.com/736x/72/7b/8f/727b8f02c863018e59fc5aa8e2920b86.jpg'        
-            if st.button('Refresh'):
-                st.rerun()
+def fetch_google_books_data(title):
+    response = requests.get(f"https://www.googleapis.com/books/v1/volumes?q={title}")
+    data = response.json()
+    if data["items"]:
+        book_info = data["items"][0]["volumeInfo"]
+        book_title = book_info.get("title", "No title available")
+        image_url = book_info["imageLinks"]["thumbnail"] if "imageLinks" in book_info else "No image available"
+        return book_title, image_url
+    return None, None
+
+st.title("Book Search")
+title = st.text_input("Enter a book title")
+
+if st.button("Search"):
+    book_title, image_url = fetch_google_books_data(title)
+    if book_title:
+        st.write(f"**Title:** {book_title}")
+        if image_url != "No image available":
+            st.image(image_url)
+        else:
+            st.write("No cover image available.")
+    else:
+        st.write("Book not found.")
+
+# if st.session_state["genre_input"] is not None:
+#     matching_books = book_df[(book_df['Main Genre'] == st.session_state["genre_input"])]
+#     if not matching_books.empty:
+#         first_book_url = matching_books.sample(n=1).iloc[0]['URLs']     
+#         st.write(first_book_url)
+#         # first_book_url = 'https://www.amazon.in/Complete-Novels-Sherlock-Holmes/dp/8175994312/ref=zg_bs_g_1318054031_d_sccl_1/000-0000000-0000000?psc=1'
+#         try:
+#             title, image_url, soup = fetch_open_graph_data(first_book_url)
+#             st.write("### Recommended Book:")
+#             st.write(f"##### <span style='color:red;'>{title}", unsafe_allow_html=True)
+#             st.write(image_url)
+#             # st.image(image_url, width=300)
+#             # st.link_button("Buy the Book", first_book_url)
+#             if st.button('Find another Book'):
+#                 st.rerun()
+#             # st.write("##### Do you like our recommendation?")      
+#             # st.session_state["title"].append(title)
+#             # sentiment_mapping = ["one", "two", "three", "four", "five"]
+#             # selected = st.feedback("stars")        
+#             # if selected is not None:
+#             #     st.session_state["feedback"][st.session_state["title"][-2]] = sentiment_mapping[selected]
+#             # st.write("##### Feedback History")      
+#             # # st.write(st.session_state["feedback"])
+#             # # st.write(st.session_state["title"])
+#             # for title,feedback in st.session_state["feedback"].items():
+#             #     if feedback:
+#             #         st.write(f"You gave the book :rainbow[{title}] {feedback} stars.") 
+#             #     else:
+#             #         st.write(f"You haven't given feedback to the book :rainbow[{title}].")    
+#             st.write(soup)                
+#         except:
+#             st.write('Please visit the site directly.')
+#             st.write(first_book_url)    
+#             title = 'not available'        
+#             image_url = 'https://i.pinimg.com/736x/72/7b/8f/727b8f02c863018e59fc5aa8e2920b86.jpg'        
+#             if st.button('Refresh'):
+#                 st.rerun()
         
     
