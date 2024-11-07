@@ -129,9 +129,9 @@ if st.session_state["genre_input"] is not None:
         first_book_url = matching_books.sample(n=1).iloc[0]['URLs']
         # title, image_url, soup = fetch_open_graph_data(first_book_url)
         soup = fetch_open_graph_data(first_book_url)
-        if title is None:
+        if True:
             title = 'abc'
-        if image_url is None:
+        if True:
             image_url = 'https://i.pinimg.com/736x/72/7b/8f/727b8f02c863018e59fc5aa8e2920b86.jpg'
         
         st.write("### Recommended Book:")
