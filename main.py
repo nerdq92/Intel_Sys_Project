@@ -112,23 +112,19 @@ def fetch_google_books_data(url):
     }
     response = requests.get(url,headers=headers)
     data = BeautifulSoup(response.content, 'html.parser')
-    # data = response.json()
-    # soup = BeautifulSoup(data.content, 'html.parser')
-    # if data["items"]:
-    #     book_info = data["items"][0]["volumeInfo"]
-    #     book_title = book_info.get("title", "No title available")
-    #     image_url = book_info["imageLinks"]["thumbnail"] if "imageLinks" in book_info else "No image available"
-    #     return book_title, image_url
-    # return None, None
-    return data
+    img_tag = data.find("img", class_="img-responsive mx-auto d-block swiper-lazy")
+    data_image = img_tag.get("data-image")
+    alt_text = img_tag.get("alt")
+    return data_image,alt_text
 
 st.title("Book Search")
 url = st.text_input("Enter a site url")
 
 if st.button("Search"):
     # book_title, image_url = fetch_google_books_data(title)
-    data = fetch_google_books_data(url)
-    st.write(data)
+    data_image,alt_text = fetch_google_books_data(url)
+    st.write(data_image)
+    st.write(alt_text)
     # if book_title:
     #     st.write(f"**Title:** {book_title}")
     #     if image_url != "No image available":
