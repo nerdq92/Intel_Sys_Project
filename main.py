@@ -130,7 +130,7 @@ if st.session_state["genre_input"] is not None:
         title, image_url, soup = fetch_open_graph_data(first_book_url)
         # title = 'abc'
         # image_url = 'https://i.pinimg.com/736x/72/7b/8f/727b8f02c863018e59fc5aa8e2920b86.jpg'
-        # st.write(soup)
+        st.write(soup)
         st.write("### Recommended Book:")
         st.write(f"##### <span style='color:red;'>{title}", unsafe_allow_html=True)
         st.image(image_url, width=300)
