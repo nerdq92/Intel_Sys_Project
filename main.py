@@ -126,7 +126,8 @@ def fetch_open_graph_data(url):
 if st.session_state["genre_input"] is not None:
     matching_books = book_df[(book_df['Main Genre'] == st.session_state["genre_input"])]
     if not matching_books.empty:
-        first_book_url = matching_books.sample(n=1).iloc[0]['URLs']        
+        # first_book_url = matching_books.sample(n=1).iloc[0]['URLs']       
+        first_book_url = 'https://www.amazon.in/MeM%C3%A9s-Nonstop-Laughing-Moment-Fresh-ebook/dp/B0CQK813XG/ref=zg_bs_g_1318143031_d_sccl_22/000-0000000-0000000?psc=1'
         try:
             title, image_url, soup = fetch_open_graph_data(first_book_url)
             st.write("### Recommended Book:")
