@@ -133,13 +133,12 @@ if st.session_state["genre_input"] is not None:
         st.write(f"##### <span style='color:red;'>{title}", unsafe_allow_html=True)
         st.image(image_url, width=300)
         st.link_button("Buy the Book", first_book_url)
-        
-        
     if st.session_state["feedback"] is None:
         st.write("##### Do you like our recommendation?")
         feedback = st.feedback("stars")
         if st.button("Let us know!"):
             st.session_state["feedback"] = feedback
+            st.rerun()
     else:
         st.write("Thank you for your feedback!")
     if st.button("Find another book"):
