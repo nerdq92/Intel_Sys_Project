@@ -132,7 +132,7 @@ if st.session_state["genre_input"] is not None:
             title = 'abc'
         if not image_url:
             image_url = 'https://i.pinimg.com/736x/72/7b/8f/727b8f02c863018e59fc5aa8e2920b86.jpg'
-        st.write(soup)
+        
         st.write("### Recommended Book:")
         st.write(f"##### <span style='color:red;'>{title}", unsafe_allow_html=True)
         st.image(image_url, width=300)
@@ -151,3 +151,4 @@ if st.session_state["genre_input"] is not None:
                 st.write(f"You gave the book :rainbow[{title}] {feedback} stars.") 
             else:
                 st.write(f"You haven't given feedback to the book :rainbow[{title}].") 
+        st.write(soup)
