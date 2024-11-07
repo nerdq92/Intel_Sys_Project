@@ -134,7 +134,9 @@ if st.session_state["genre_input"] is not None:
         st.image(image_url, width=300)
         st.link_button("Buy the Book", first_book_url)
         st.write("##### Do you like our recommendation?")        
-        st.session_state["feedback"][f"{title}"] = st.feedback("stars")        
+        selected = st.feedback("stars")        
+        if selected is not None:
+            st.session_state["feedback"][f"{title}"] = selected
         st.write("##### Feedback History")      
         st.write(st.session_state["feedback"])
         for title,feedback in st.session_state["feedback"].items():
