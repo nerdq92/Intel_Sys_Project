@@ -100,9 +100,9 @@ if  st.session_state["personality_pred"] is not None and st.session_state["genre
         st.session_state["genre_input"] = genre_input
         st.rerun()
 
-book_df = pd.read_csv('Books_df.csv')
 
-def fetch_google_books_data(url):
+
+def fetch_books_data(url):
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36",
         "Accept-Language": "en-US,en;q=0.9",
@@ -112,28 +112,20 @@ def fetch_google_books_data(url):
     }
     response = requests.get(url,headers=headers)
     data = BeautifulSoup(response.content, 'html.parser')
-    img_tag = data.find("img", class_="img-responsive mx-auto d-block swiper-lazy")
-    data_image = img_tag.get("data-image")
-    alt_text = img_tag.get("alt")
-    return data_image,alt_text
-
-st.title("Book Search")
-url = st.text_input("Enter a site url")
-
-if st.button("Search"):
-    # book_title, image_url = fetch_google_books_data(title)
-    data_image,alt_text = fetch_google_books_data(url)
-    st.write(alt_text)
-    st.image('https:'+data_image,width=250)    
-    # st.write(img_tag)
-    # if book_title:
-    #     st.write(f"**Title:** {book_title}")
-    #     if image_url != "No image available":
-    #         st.image(image_url)
-    #     else:
-    #         st.write("No cover image available.")
-    # else:
-    #     st.write("Book not found.")
+    img_tags = data.find_all("img", class_="lazyload img-responsive center-block")
+    # data_image = img_tag.get("data-src")
+    # alt_text = img_tag.get("alt")
+    return img_tags
+    
+if st.session_state["genre_input"] is not None:
+    st.title("Book Recommendation")
+    url = 'https://nhanam.vn/lang-man'
+    
+    if st.button("Search"):
+        img_tags = fetch_books_data(url)    
+        random_element = random.choice(img_tags)
+        st.write(random_element.get("alt"))
+        st.image(random_element.get("data-src"))
 
 # if st.session_state["genre_input"] is not None:
 #     matching_books = book_df[(book_df['Main Genre'] == st.session_state["genre_input"])]
