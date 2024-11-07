@@ -123,8 +123,8 @@ url = st.text_input("Enter a site url")
 if st.button("Search"):
     # book_title, image_url = fetch_google_books_data(title)
     data_image,alt_text = fetch_google_books_data(url)
-    st.write(data_image)
     st.write(alt_text)
+    st.image(data_image)    
     # if book_title:
     #     st.write(f"**Title:** {book_title}")
     #     if image_url != "No image available":
