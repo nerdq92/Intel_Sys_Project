@@ -44,13 +44,19 @@ if st.session_state["personality_pred"] is None:
         if st.button("Predict"):
             with open('gender_encoder.pkl', 'rb') as f:
                 gender_encoder = pickle.load(f)
+            with open('personality_encoder.pkl', 'rb') as f:
+                personality_encoder = pickle.load(f)
             with open("personality_model.pkl", "rb") as f:
                 model = pickle.load(f)
+            with open("scaler.pkl", "rb") as f:
+                scaler = pickle.load(f)
             feature_columns = ["Gender", "Age","openness","neuroticism","conscientiousness","agreeableness","extraversion"]
             column_data = [st.session_state["gender"], st.session_state["age"],st.session_state["openness"],st.session_state["neuroticism"],st.session_state["conscientiousness"],st.session_state["agreeableness"],st.session_state["extraversion"]]
             new_data = pd.DataFrame([column_data], columns=feature_columns)
             new_data['Gender'] = gender_encoder.transform(new_data['Gender'])
-            personality_pred = model.predict(new_data)[0]
+            new_data_scaled = scaler.transform(new_data)
+            y_pred = model.predict(new_data_scaled)
+            personality_pred = personality_encoder.inverse_transform(y_pred)[0]
             st.session_state["personality_pred"] = personality_pred
             st.rerun()
     else:
