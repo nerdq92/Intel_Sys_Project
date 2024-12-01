@@ -1,11 +1,10 @@
 import streamlit as st
 import pandas as pd
 import pickle
-from bs4 import BeautifulSoup
-import requests
 import random
 import csv
 import time
+from API_functions import fetch_books_data,fetch_books_description
 
 # Initialize session state variables
 if "personality_pred" not in st.session_state:
@@ -63,7 +62,7 @@ if st.session_state["personality_pred"] is None:
             st.toast("You're doing great!", icon='🎉')
             time.sleep(1)
             st.toast("Don't forget to confirm your information and hit Predict!",icon='😍')
-            time.sleep(5)
+            time.sleep(1)
             st.session_state["toast"] = 1
         # SVM model predicting personality
         if st.button("Predict",type="primary"):
@@ -175,33 +174,6 @@ if  st.session_state["personality_pred"] is not None and st.session_state["genre
         st.session_state["random_choice"] = None
         st.rerun()
 
-# API_functions
-def fetch_books_data(url):
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36",
-        "Accept-Language": "en-US,en;q=0.9",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-        "Connection": "keep-alive",
-    }
-    response = requests.get(url,headers=headers)
-    data = BeautifulSoup(response.content, 'html.parser')
-    # img_tags = data.find_all("img", class_="lazyload img-responsive center-block")
-    image_thumb = data.find_all("a",class_="image_thumb")
-    return image_thumb
-def fetch_books_description(url):
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36",
-        "Accept-Language": "en-US,en;q=0.9",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-        "Connection": "keep-alive",
-    }
-    response = requests.get(url,headers=headers)
-    data = BeautifulSoup(response.content, 'html.parser')
-    description = data.find("meta", {"itemprop": "description"}).get("content")
-    return description
-
 # book recommendation
 if st.session_state["genre_input"] is not None:
     # book recommender module
@@ -226,7 +198,7 @@ if st.session_state["genre_input"] is not None:
     left.write(f"##### <span style='color:red;'>{title}", unsafe_allow_html=True)
     left.image(random_element.get("data-src"),use_column_width=True)
     st.markdown(f"[Buy the book here]({book_url})")
-    right.write(f"##### <span style='color:black;'>Mô tả", unsafe_allow_html=True)
+    right.write(f"##### <span style='color:black;'>Description", unsafe_allow_html=True)
     right.write(description)
     # rating display
     if st.session_state["random_choice"].find("img").get("alt") in st.session_state["title"]:
