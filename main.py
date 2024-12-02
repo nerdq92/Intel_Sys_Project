@@ -151,7 +151,8 @@ if  st.session_state["personality_pred"] is not None and st.session_state["genre
     # genre recommendation
     # genre recommendation module
     users_df = pd.read_csv('users.csv')
-    top_genres = users_df[(users_df['age']==st.session_state["age"]) & (users_df['gender']==st.session_state["gender"])].groupby('selected_genre')['rating'].mean().sort_values(ascending=False).head(4).reset_index()
+    # matching genres by age, gender and pred_presonality
+    top_genres = users_df[(users_df['age']==st.session_state["age"]) & (users_df['gender']==st.session_state["gender"]) & (users_df['pred_personality']==st.session_state["personality_pred"])].groupby('selected_genre')['rating'].mean().sort_values(ascending=False).head(4).reset_index()
     top_genres = tuple(top_genres['selected_genre'])
     # Pick random genre choices
     book_genres_df = pd.read_csv('book_genres.csv')
@@ -169,7 +170,7 @@ if  st.session_state["personality_pred"] is not None and st.session_state["genre
         unsafe_allow_html=True
     )
     genre_input = right.selectbox("You may be interested in one of these genres. Pick one:", st.session_state["genre_choices"])
-    if right.button('Submit'):
+    if right.button('Submit',type="primary"):
         st.session_state["genre_input"] = genre_input
         st.session_state["random_choice"] = None
         st.rerun()
@@ -224,21 +225,22 @@ if st.session_state["genre_input"] is not None:
         st.session_state["genre_choices"] = ()
         st.rerun()
     # top book suggestions
-    # module and display
+    # top book suggestion module
     users_df = pd.read_csv('users.csv')
+    # matching top 3 books based on age, gender, and personality
     top_books = users_df[(users_df['age'] == st.session_state["age"]) & (users_df['gender'] == st.session_state["gender"])].groupby(['book','book_url','pic_url'])['rating'].mean().sort_values(ascending=False).head(3).reset_index()
-    # st.write(top_books)
-    if top_books.shape[0]==3:
-        st.write("##### You may also like:")
-        l, m, r = st.columns(3)
-        l.image(top_books.iloc[0]['pic_url'],use_column_width=True)
-        l.markdown(f"{top_books.iloc[0]['book']} ({top_books.iloc[0]['rating']} ⭐) - [BUY NOW]({top_books.iloc[0]['book_url']})")
-        m.image(top_books.iloc[1]['pic_url'], use_column_width=True)
-        m.markdown(f"{top_books.iloc[1]['book']} ({top_books.iloc[1]['rating']} ⭐) - [BUY NOW]({top_books.iloc[1]['book_url']})")
-        r.image(top_books.iloc[2]['pic_url'], use_column_width=True)
-        r.markdown(f"{top_books.iloc[2]['book']} ({top_books.iloc[2]['rating']} ⭐) - [BUY NOW]({top_books.iloc[2]['book_url']})")
-    else:
-        st.write("##### You are a great book adventurer!")
+    if top_books.shape[0] < 3:
+        top_books = users_df.groupby(['book', 'book_url', 'pic_url'])['rating'].mean().sort_values(ascending=False).head(3).reset_index()
+    # top book suggestions display
+    st.write("##### You may also like:")
+    l, m, r = st.columns(3)
+    l.image(top_books.iloc[0]['pic_url'],use_column_width=True)
+    l.markdown(f"{top_books.iloc[0]['book']} ({top_books.iloc[0]['rating']} ⭐) - [BUY NOW]({top_books.iloc[0]['book_url']})")
+    m.image(top_books.iloc[1]['pic_url'], use_column_width=True)
+    m.markdown(f"{top_books.iloc[1]['book']} ({top_books.iloc[1]['rating']} ⭐) - [BUY NOW]({top_books.iloc[1]['book_url']})")
+    r.image(top_books.iloc[2]['pic_url'], use_column_width=True)
+    r.markdown(f"{top_books.iloc[2]['book']} ({top_books.iloc[2]['rating']} ⭐) - [BUY NOW]({top_books.iloc[2]['book_url']})")
+
 
 
         
