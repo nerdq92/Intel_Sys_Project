@@ -203,7 +203,7 @@ if st.session_state["genre_input"] is not None:
     right.write(description)
     # rating display
     if st.session_state["random_choice"].find("img").get("alt") in st.session_state["title"]:
-        st.write("##### :purple[Have a second thought about this book?]")
+        st.write(f"##### <span style='color:purple;'>Have a second thought about this book?", unsafe_allow_html=True)
     else:
         st.write("##### :rainbow[Do you like our recommendation?]")
     selected = st.feedback("stars")
